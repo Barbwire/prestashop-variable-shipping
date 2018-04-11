@@ -1,11 +1,11 @@
 <?php
 	include_once('../../config/config.inc.php');
 	include_once('../../init.php');
-	include_once('../../modules/variableshipping/variableshipping.php');
+	include_once('../../modules/customshipping/customshipping.php');
 
 	$context = Context::getContext();
 
-	if (!Tools::getValue('ajax') || Tools::getValue('token') != sha1(_COOKIE_KEY_.'variableshipping'))
+	if (!Tools::getValue('ajax') || Tools::getValue('token') != sha1(_COOKIE_KEY_.'customshipping'))
 		die;
 
 	// Set shipping for this customer and cart
