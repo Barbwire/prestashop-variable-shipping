@@ -1,7 +1,7 @@
-ps-custom-shipping
+ts-custom-shipping
 ============================
 
-![solarized palette](https://github.com/Barbwire/ps-custom-shipping/raw/master/screenshot.png)
+![solarized palette](https://github.com/Barbwire/ts-custom-shipping/raw/master/screenshot.png)
 
 Custom shipping price for manual orders in PrestaShop 1.7. Adds a new field that overrides shipping costs for manual orders. Works for PrestaShop 1.7.0 and above.
 
