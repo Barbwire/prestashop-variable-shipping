@@ -1,13 +1,12 @@
 <?php
-	include_once('../../config/config.inc.php');
-	include_once('../../init.php');
-	include_once('../../modules/customshipping/customshipping.php');
+include_once('../../config/config.inc.php');
+include_once('../../init.php');
+include_once('../../modules/ts_customshipping/ts_customshipping.php');
 
-	$context = Context::getContext();
+if (!Tools::getValue('ajax') || Tools::getValue('token') != sha1(_COOKIE_KEY_ . 'ts_customshipping')) {
+    die;
+}
 
-	if (!Tools::getValue('ajax') || Tools::getValue('token') != sha1(_COOKIE_KEY_.'customshipping'))
-		die;
-
-	// Set shipping for this customer and cart
-	file_put_contents(sys_get_temp_dir() . '/psvs-' . _DB_NAME_ . '-' . Tools::getValue('id_cart') . '-' . Tools::getValue('id_customer'), round(floatval(Tools::getValue('value')), 2));
+// Set shipping for this customer and cart
+Configuration::updateValue('TS_CUSTOM_SHIPPING_CARRIER_VALUE', round(floatval(Tools::getValue('value')), 2));
 ?>
