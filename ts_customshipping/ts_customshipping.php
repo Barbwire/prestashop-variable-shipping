@@ -100,14 +100,11 @@ class Ts_Customshipping extends CarrierModule
             ),
         );
 
-        try {
-            $id_carrier1 = $this->installExternalCarrier($carrierConfig[0]);
-            $Carrier = new Carrier((int)$id_carrier1);
-            $Carrier->setTaxRulesGroup((int)$this->getTaxRulesGroupMostUsed());
-            Configuration::updateValue('TS_CUSTOM_SHIPPING_CARRIER_ID',  (int)$id_carrier1);
-        } catch (PrestaShopDatabaseException $e) {
-        } catch (PrestaShopException $e) {
-        }
+
+        $id_carrier1 = $this->installExternalCarrier($carrierConfig[0]);
+        $Carrier = new Carrier((int)$id_carrier1);
+        $Carrier->setTaxRulesGroup((int)$this->getTaxRulesGroupMostUsed());
+        Configuration::updateValue('TS_CUSTOM_SHIPPING_CARRIER_ID',  (int)$id_carrier1);
 
         return parent::install() && $this->registerHook('displayBackOfficeHeader');
     }
@@ -129,6 +126,7 @@ class Ts_Customshipping extends CarrierModule
         if (!$Carrier1->delete())
             return false;
         Configuration::deleteByName('TS_CUSTOM_SHIPPING_CARRIER_ID');
+        Configuration::deleteByName('TS_CUSTOM_SHIPPING_CARRIER_VALUE');
 
         // Uninstall
         return parent::uninstall() && $this->unregisterHook('displayBackOfficeHeader');
@@ -221,7 +219,7 @@ class Ts_Customshipping extends CarrierModule
             $data = array();
             foreach ($groups as $group) {
                 $data[] = array(
-                    'id_carrier' => (int)($carrier->id_reference),
+                    'id_carrier' => (int)($carrier->id),
                     'id_group' => (int)($group['id_group']),
                 );
             }
@@ -229,13 +227,13 @@ class Ts_Customshipping extends CarrierModule
 
 
             $rangePrice = new RangePrice();
-            $rangePrice->id_carrier = $carrier->id_reference;
+            $rangePrice->id_carrier = $carrier->id;
             $rangePrice->delimiter1 = '0';
             $rangePrice->delimiter2 = '10000';
             $rangePrice->add();
 
             $rangeWeight = new RangeWeight();
-            $rangeWeight->id_carrier = $carrier->id_reference;
+            $rangeWeight->id_carrier = $carrier->id;
             $rangeWeight->delimiter1 = '0';
             $rangeWeight->delimiter2 = '10000';
             $rangeWeight->add();
@@ -252,7 +250,7 @@ class Ts_Customshipping extends CarrierModule
                 return false;
 
             // Return ID Carrier
-            return (int)($carrier->id_reference);
+              return (int)($carrier->id);
         }
 
         return false;
