@@ -85,7 +85,7 @@ class Ts_CustomShipping extends CarrierModule
                 'id_tax_rule_group' => '2',
                 'shipping_handling' => false,
                 'range_behavior' => 0,
-                'delay' => array
+                'delay' => array(
                     'fr' => 'Custom',
                     'en' => 'Custom',
                     Language::getIsoById(Configuration::get('PS_LANG_DEFAULT')) => 'Custom',
