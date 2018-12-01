@@ -1,13 +1,14 @@
 <?php
-
 /**
- * This file is part of PHP CS Fixer.
+ * NOTICE OF LICENSE
  *
- * (c) Fabien Potencier <fabien@symfony.com>
- *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
  *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
+ * @author     Barbara Leth
+ * @copyright  2018 TecServe UG
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 include_once '../../config/config.inc.php';

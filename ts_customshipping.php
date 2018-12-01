@@ -1,20 +1,20 @@
 <?php
-
 /**
- * This file is part of PHP CS Fixer.
+ * NOTICE OF LICENSE
  *
- * (c) Fabien Potencier <fabien@symfony.com>
- *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
  *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
+ * @author     Barbara Leth
+ * @copyright  2018 TecServe UG
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
-use PrestaShop\PrestaShop\Core\Addon\Module\ModuleManagerBuilder;
 
 if (!defined('_PS_VERSION_')) {
     exit;
 }
+use PrestaShop\PrestaShop\Core\Addon\Module\ModuleManagerBuilder;
 
 class Ts_CustomShipping extends CarrierModule
 {
@@ -27,7 +27,7 @@ class Ts_CustomShipping extends CarrierModule
         $this->version = '1.0.0';
         $this->author = 'Barbara Leth';
         $this->need_instance = 1;
-        $this->ps_versions_compliancy = ['min' => '1.7', 'max' => _PS_VERSION_];
+        $this->ps_versions_compliancy = array('min' => '1.7', 'max' => _PS_VERSION_);
 
         // Set $this->bootstrap to true if your module is compliant with bootstrap (PrestaShop 1.6)
         $this->bootstrap = true;
@@ -52,19 +52,20 @@ class Ts_CustomShipping extends CarrierModule
             );
 
             // Saving id carrier list
-            $id_carrier_list = [];
+            $id_carrier_list = array();
             foreach ($carriers as $carrier) {
                 $id_carrier_list[] .= $carrier['id_carrier'];
             }
 
             // Testing if Carrier ID exists
-            $warning = [];
+            $warning = array();
             if (!in_array((int) (Configuration::get('TS_CUSTOM_SHIPPING_CARRIER_ID')), $id_carrier_list, true)) {
                 $warning[] .= $this->l('TS Custom Shipping Carrier').' ';
             }
             if (count($warning)) {
                 $this->warning .= implode(
-                    ' , ', $warning
+                    ' , ', 
+                    $warning
                 ).$this->l('must be configured to use this module correctly').' ';
             }
         }
@@ -76,25 +77,25 @@ class Ts_CustomShipping extends CarrierModule
      */
     public function install()
     {
-        $carrierConfig = [
-            0 => [
+        $carrierConfig = array(
+            0 => array(
                 'name' => 'Custom Shipping',
                 'active' => true,
                 'deleted' => 0,
                 'id_tax_rule_group' => '2',
                 'shipping_handling' => false,
                 'range_behavior' => 0,
-                'delay' => [
+                'delay' => array
                     'fr' => 'Custom',
                     'en' => 'Custom',
                     Language::getIsoById(Configuration::get('PS_LANG_DEFAULT')) => 'Custom',
-                ],
+                ),
                 'is_module' => true,
                 'shipping_external' => true,
                 'external_module_name' => 'ts_customshipping',
                 'need_range' => true,
-            ],
-        ];
+            ),
+        );
 
         $id_carrier1 = $this->installExternalCarrier($carrierConfig[0]);
         $Carrier = new Carrier((int) $id_carrier1);
@@ -224,12 +225,12 @@ class Ts_CustomShipping extends CarrierModule
 
         if ($carrier->add()) {
             $groups = Group::getGroups(true);
-            $data = [];
+            $data = array();
             foreach ($groups as $group) {
-                $data[] = [
+                $data[] = array(
                     'id_carrier' => (int) ($carrier->id),
                     'id_group' => (int) ($group['id_group']),
-                ];
+                );
             }
             Db::getInstance()->insert('carrier_group', $data, false, false, Db::INSERT);
 
@@ -249,25 +250,25 @@ class Ts_CustomShipping extends CarrierModule
             foreach ($zones as $zone) {
                 Db::getInstance()->insert(
                     'carrier_zone',
-                    ['id_carrier' => (int) ($carrier->id), 'id_zone' => (int) ($zone['id_zone'])],
+                    array('id_carrier' => (int) ($carrier->id), 'id_zone' => (int) ($zone['id_zone'])),
                     false,
                     false,
                     Db::INSERT
                 );
-                Db::getInstance()->insert('delivery', [
+                Db::getInstance()->insert('delivery', array(
                     'id_carrier' => (int) ($carrier->id),
                     'id_range_price' => (int) ($rangePrice->id),
                     'id_range_weight' => null,
                     'id_zone' => (int) ($zone['id_zone']),
                     'price' => '0',
-                ], false, false, Db::INSERT);
-                Db::getInstance()->insert('delivery', [
+                ), false, false, Db::INSERT);
+                Db::getInstance()->insert('delivery', array(
                     'id_carrier' => (int) ($carrier->id),
                     'id_range_price' => null,
                     'id_range_weight' => (int) ($rangeWeight->id),
                     'id_zone' => (int) ($zone['id_zone']),
                     'price' => '0',
-                ], false, false, Db::INSERT);
+                ), false, false, Db::INSERT);
             }
 
             // Copy Logo
